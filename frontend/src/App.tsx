@@ -16,6 +16,7 @@ import MonthlyCyclesPage from '@/pages/MonthlyCyclesPage';
 import DeliveryPage from '@/pages/DeliveryPage';
 import MonthlyDashboardPage from '@/pages/MonthlyDashboardPage';
 import CycleDetailsPage from '@/pages/CycleDetailsPage';
+import ReportsPage from '@/pages/ReportsPage';
 
 function AppInitializer({ children }: { children: React.ReactNode }) {
   const { fetchMe, initialized } = useAuthStore();
@@ -66,6 +67,7 @@ export default function App() {
               <Route path="/monthly/delivery" element={<DeliveryPage />} />
               <Route path="/monthly/dashboard" element={<MonthlyDashboardPage />} />
               <Route path="/monthly/cycles/:id/details" element={<CycleDetailsPage />} />
+              <Route path="/reports" element={<ReportsPage />} />
             </Route>
           </Route>
 

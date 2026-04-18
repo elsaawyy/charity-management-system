@@ -6,8 +6,9 @@ import os
 from app.core.config import settings
 from app.api.auth import router as auth_router
 from app.api import cases
-from app.api import aids  # ← ADD THIS IMPORT
+from app.api import aids 
 from app.api import monthly
+from app.api import reports
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -40,10 +41,8 @@ app.include_router(aids.router, prefix=settings.API_PREFIX)
 
 app.include_router(monthly.router, prefix="/api", tags=["Monthly Aid"])
 
-# Phase 2+ routers will be registered here:
-# from app.api import monthly, reports, users, audit, settings_api
-# app.include_router(monthly.router, prefix=settings.API_PREFIX)
-# ...
+
+app.include_router(reports.router, prefix="/api", tags=["Reports"])
 
 os.makedirs("/app/uploads", exist_ok=True)
 try:

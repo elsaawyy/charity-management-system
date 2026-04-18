@@ -479,13 +479,6 @@ def get_cycle_details(
     }
     
     
-    
-from fastapi.responses import StreamingResponse
-import io
-import openpyxl
-from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
-from datetime import datetime
-from urllib.parse import quote
 
 @router.get("/monthly/cycles/{cycle_id}/export")
 def export_cycle_to_excel(

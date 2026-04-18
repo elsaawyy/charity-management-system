@@ -87,6 +87,13 @@ getMonthlyDashboard: () => api.get('/monthly/dashboard'),
 openCurrentCycle: () => api.post('/monthly/cycles/current/open'),
 getCycleDetails: (cycleId: number) => api.get(`/monthly/cycles/${cycleId}/details`),
 exportCycleToExcel: (cycleId: number) => api.get(`/monthly/cycles/${cycleId}/export`, { responseType: 'blob' }),
+// Reports Methods
+getDashboardStats: () => api.get('/reports/dashboard-stats'),
+getAidDistribution: (params?: any) => api.get('/reports/aid-distribution', { params }),
+getMonthlyStats: (params?: any) => api.get('/reports/monthly-stats', { params }),
+getTopBeneficiaries: (params?: any) => api.get('/reports/top-beneficiaries', { params }),
+getCaseStatus: () => api.get('/reports/case-status'),
+exportReports: (params?: any) => api.get('/reports/export-excel', { params, responseType: 'blob' }),
 };
 
 export default caseService;
