@@ -94,6 +94,23 @@ getMonthlyStats: (params?: any) => api.get('/reports/monthly-stats', { params })
 getTopBeneficiaries: (params?: any) => api.get('/reports/top-beneficiaries', { params }),
 getCaseStatus: () => api.get('/reports/case-status'),
 exportReports: (params?: any) => api.get('/reports/export-excel', { params, responseType: 'blob' }),
+
+// User Management
+getUsers: (params?: any) => api.get('/users', { params }),
+getUser: (id: number) => api.get(`/users/${id}`),
+createUser: (data: any) => api.post('/users', data),
+updateUser: (id: number, data: any) => api.put(`/users/${id}`, data),
+deleteUser: (id: number) => api.delete(`/users/${id}`),
+
+// Audit Logs
+getAuditLogs: (params?: any) => api.get('/audit-logs', { params }),
+getActionTypes: () => api.get('/audit-logs/actions'),
+exportAuditLogs: (params?: any) => api.get('/audit-logs/export', { params, responseType: 'blob' }),
+
+// Settings
+getSettings: () => api.get('/settings'),
+updateSetting: (key: string, value: string) => api.put(`/settings/${key}`, { setting_value: value }),
+backupDatabase: () => api.post('/settings/backup'),
 };
 
 export default caseService;

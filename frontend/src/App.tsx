@@ -10,27 +10,32 @@ import DashboardPage from "@/pages/DashboardPage";
 import CasesListPage from "@/pages/CasesListPage";
 import CaseFormPage from "@/pages/CaseFormPage";
 import CaseDetailPage from "@/pages/CaseDetailPage";
-import AidsListPage from "@/pages/AidsListPage";  // ← ADD THIS
-import AddAidPage from "@/pages/AddAidPage";      // ← ADD THIS
+import AidsListPage from "@/pages/AidsListPage";
+import AddAidPage from "@/pages/AddAidPage";
 import MonthlyCyclesPage from '@/pages/MonthlyCyclesPage';
 import DeliveryPage from '@/pages/DeliveryPage';
 import MonthlyDashboardPage from '@/pages/MonthlyDashboardPage';
 import CycleDetailsPage from '@/pages/CycleDetailsPage';
 import ReportsPage from '@/pages/ReportsPage';
+import UsersPage from '@/pages/UsersPage';
+import AuditLogsPage from '@/pages/AuditLogsPage';
+import SettingsPage from '@/pages/SettingsPage';
+import ProfilePage from '@/pages/ProfilePage';
 
 function AppInitializer({ children }: { children: React.ReactNode }) {
-  const { fetchMe, initialized } = useAuthStore();
+  const { fetchMe, isAuthenticated } = useAuthStore();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const init = async () => {
       await fetchMe();
-      setLoading(false);
+      // Small delay to ensure state is updated
+      setTimeout(() => setLoading(false), 100);
     };
     init();
   }, []);
 
-  if (!initialized && loading) {
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-gray-500">جاري التحميل...</div>
@@ -41,6 +46,8 @@ function AppInitializer({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+
+
 export default function App() {
   return (
     <BrowserRouter>
@@ -50,16 +57,14 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           
-          {/* Protected Routes */}
-          <Route element={<ProtectedRoute />}>
+          {/* Protected Routes - All Staff */}
+          <Route element={<ProtectedRoute adminOnly={false} />}>
             <Route element={<AppLayout />}>
               <Route path="/dashboard" element={<DashboardPage />} />
               <Route path="/cases" element={<CasesListPage />} />
               <Route path="/cases/new" element={<CaseFormPage />} />
               <Route path="/cases/:id" element={<CaseDetailPage />} />
               <Route path="/cases/:id/edit" element={<CaseFormPage />} />
-              
-              {/* Aids Routes - ADD THESE LINES */}
               <Route path="/aids" element={<AidsListPage />} />
               <Route path="/aids/create" element={<AddAidPage />} />
               <Route path="/aids/:id/edit" element={<AddAidPage />} />
@@ -68,6 +73,16 @@ export default function App() {
               <Route path="/monthly/dashboard" element={<MonthlyDashboardPage />} />
               <Route path="/monthly/cycles/:id/details" element={<CycleDetailsPage />} />
               <Route path="/reports" element={<ReportsPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+            </Route>
+          </Route>
+
+          {/* Protected Routes - Admin Only */}
+          <Route element={<ProtectedRoute adminOnly={true} />}>
+            <Route element={<AppLayout />}>
+              <Route path="/users" element={<UsersPage />} />
+              <Route path="/audit-logs" element={<AuditLogsPage />} />
+              <Route path="/settings" element={<SettingsPage />} />
             </Route>
           </Route>
 

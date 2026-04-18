@@ -168,7 +168,7 @@ const printReceiptHTML = (receipt: any) => {
     <body>
       <div class="receipt">
         <div class="header">
-          <div class="title">${receipt.organization_name || 'نظام إدارة الحالات الخيرية'}</div>
+          <div class="title">${receipt.organization_name || 'جمعية النور المحمدي'}</div>
           <div class="subtitle">إيصال مساعدة</div>
         </div>
         <div class="receipt-title">

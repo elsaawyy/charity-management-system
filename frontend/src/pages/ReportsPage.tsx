@@ -174,7 +174,7 @@ export default function ReportsPage() {
       <div className="print-area">
         {/* Report Title for Print */}
         <div className="text-center mb-6 hidden-print-header" style={{ display: 'none' }}>
-          <h1 className="text-2xl font-bold">نظام إدارة الحالات الخيرية</h1>
+          <h1 className="text-2xl font-bold">جمعية النور المحمدي</h1>
           <h2 className="text-xl mt-2">تقرير إحصائيات</h2>
           <p className="text-gray-500 mt-1">تاريخ التقرير: {new Date().toLocaleDateString('ar-EG')}</p>
           <hr className="my-4" />

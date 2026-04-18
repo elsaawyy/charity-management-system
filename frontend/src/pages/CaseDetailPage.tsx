@@ -101,7 +101,7 @@ export default function CaseDetailPage() {
       <body>
         <div class="receipt">
           <div class="header">
-            <div class="title">نظام إدارة الحالات الخيرية</div>
+            <div class="title">جمعية النور المحمدي</div>
             <div class="subtitle">إيصال مساعدة</div>
           </div>
           <div class="receipt-title">${receipt.aid_type === 'مساعدات مالية' ? 'إيصال صرف مساعدة مالية' : 'إيصال استلام مساعدة عينية'}</div>

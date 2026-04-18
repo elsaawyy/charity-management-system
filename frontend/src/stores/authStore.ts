@@ -9,6 +9,9 @@ export interface User {
   full_name: string;
   role: "Admin" | "Staff";
   is_active: boolean;
+  created_at?: string;  // ← Add this
+  updated_at?: string;  // ← Add this
+
 }
 
 interface AuthState {
@@ -19,7 +22,6 @@ interface AuthState {
   logout: () => Promise<void>;
   fetchMe: () => Promise<void>;
   setUser: (user: User | null) => void;
-  initialized: boolean;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -28,7 +30,6 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       isAuthenticated: false,
       isLoading: false,
-      initialized: false,
 
       setUser: (user) =>
         set({ user, isAuthenticated: !!user }),
@@ -37,10 +38,18 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true });
         try {
           const { data } = await api.post("/auth/login", { username, password });
+          
+          if (!data.access_token) {
+            throw new Error("No access token received");
+          }
+          
+          // After login, fetch user data
           const meResponse = await api.get("/auth/me");
-          set({ user: meResponse.data, isAuthenticated: true, isLoading: false, initialized: true });
-        } catch (err) {
+          set({ user: meResponse.data, isAuthenticated: true, isLoading: false });
+          return; // Success
+        } catch (err: any) {
           set({ isLoading: false });
+          // Throw the error to be caught by the LoginPage
           throw err;
         }
       },
@@ -48,25 +57,19 @@ export const useAuthStore = create<AuthState>()(
       logout: async () => {
         try {
           await api.post("/auth/logout");
+        } catch (err) {
+          console.error("Logout error:", err);
         } finally {
-          set({ user: null, isAuthenticated: false, initialized: true });
-          window.location.href = "/login";
+          set({ user: null, isAuthenticated: false });
         }
       },
 
       fetchMe: async () => {
-        // Skip if already initialized or on public pages
-        const pathname = window.location.pathname;
-        if (pathname === "/" || pathname === "/login") {
-          set({ initialized: true });
-          return;
-        }
-        
         try {
           const { data } = await api.get("/auth/me");
-          set({ user: data, isAuthenticated: true, initialized: true });
+          set({ user: data, isAuthenticated: true });
         } catch (error) {
-          set({ user: null, isAuthenticated: false, initialized: true });
+          set({ user: null, isAuthenticated: false });
         }
       },
     }),
