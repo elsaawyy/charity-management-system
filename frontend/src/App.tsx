@@ -10,6 +10,8 @@ import DashboardPage from "@/pages/DashboardPage";
 import CasesListPage from "@/pages/CasesListPage";
 import CaseFormPage from "@/pages/CaseFormPage";
 import CaseDetailPage from "@/pages/CaseDetailPage";
+import AidsListPage from "@/pages/AidsListPage";  // ← ADD THIS
+import AddAidPage from "@/pages/AddAidPage";      // ← ADD THIS
 
 function AppInitializer({ children }: { children: React.ReactNode }) {
   const { fetchMe, initialized } = useAuthStore();
@@ -51,6 +53,11 @@ export default function App() {
               <Route path="/cases/new" element={<CaseFormPage />} />
               <Route path="/cases/:id" element={<CaseDetailPage />} />
               <Route path="/cases/:id/edit" element={<CaseFormPage />} />
+              
+              {/* Aids Routes - ADD THESE LINES */}
+              <Route path="/aids" element={<AidsListPage />} />
+              <Route path="/aids/create" element={<AddAidPage />} />
+              <Route path="/aids/:id/edit" element={<AddAidPage />} />
             </Route>
           </Route>
 

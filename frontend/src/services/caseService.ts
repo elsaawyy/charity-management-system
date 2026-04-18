@@ -65,6 +65,15 @@ const caseService = {
   createWorkRecord: (caseId: number, data: Partial<WorkRecord>) => api.post(`/cases/${caseId}/work`, data),
   updateWorkRecord: (workId: number, data: Partial<WorkRecord>) => api.put(`/work/${workId}`, data),
   deleteWorkRecord: (workId: number) => api.delete(`/work/${workId}`),
+  // Add to caseService object:
+getAids: (params?: any) => api.get('/aids', { params }),
+getAid: (id: number) => api.get(`/aids/${id}`),
+createAid: (data: any) => api.post('/aids', data),
+updateAid: (id: number, data: any) => api.put(`/aids/${id}`, data),
+deleteAid: (id: number) => api.delete(`/aids/${id}`),
+getAidReceipt: (id: number) => api.get(`/aids/${id}/receipt`),
+getAidTypes: () => api.get('/aids/types'),
+getCasesForDropdown: () => api.get('/cases', { params: { size: 100 } }),
 };
 
 export default caseService;
