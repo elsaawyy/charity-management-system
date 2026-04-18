@@ -5,6 +5,7 @@ import os
 
 from app.core.config import settings
 from app.api.auth import router as auth_router
+from app.api import cases  # Add this import
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -28,9 +29,12 @@ app.add_middleware(
 
 app.include_router(auth_router, prefix=settings.API_PREFIX)
 
+# Add cases router
+app.include_router(cases.router, prefix=settings.API_PREFIX)
+
 # Phase 2+ routers will be registered here:
-# from app.api import cases, aids, monthly, reports, users, audit, settings_api
-# app.include_router(cases.router, prefix=settings.API_PREFIX)
+# from app.api import aids, monthly, reports, users, audit, settings_api
+# app.include_router(aids.router, prefix=settings.API_PREFIX)
 # ...
 
 os.makedirs("/app/uploads", exist_ok=True)

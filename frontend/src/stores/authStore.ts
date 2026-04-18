@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import api from "@/lib/api";
+import api from "@/services/api";
 
 export interface User {
   id: number;
@@ -19,6 +19,7 @@ interface AuthState {
   logout: () => Promise<void>;
   fetchMe: () => Promise<void>;
   setUser: (user: User | null) => void;
+  initialized: boolean;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -27,6 +28,7 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       isAuthenticated: false,
       isLoading: false,
+      initialized: false,
 
       setUser: (user) =>
         set({ user, isAuthenticated: !!user }),
@@ -35,7 +37,8 @@ export const useAuthStore = create<AuthState>()(
         set({ isLoading: true });
         try {
           const { data } = await api.post("/auth/login", { username, password });
-          set({ user: data.user, isAuthenticated: true, isLoading: false });
+          const meResponse = await api.get("/auth/me");
+          set({ user: meResponse.data, isAuthenticated: true, isLoading: false, initialized: true });
         } catch (err) {
           set({ isLoading: false });
           throw err;
@@ -46,17 +49,24 @@ export const useAuthStore = create<AuthState>()(
         try {
           await api.post("/auth/logout");
         } finally {
-          set({ user: null, isAuthenticated: false });
+          set({ user: null, isAuthenticated: false, initialized: true });
           window.location.href = "/login";
         }
       },
 
       fetchMe: async () => {
+        // Skip if already initialized or on public pages
+        const pathname = window.location.pathname;
+        if (pathname === "/" || pathname === "/login") {
+          set({ initialized: true });
+          return;
+        }
+        
         try {
           const { data } = await api.get("/auth/me");
-          set({ user: data, isAuthenticated: true });
-        } catch {
-          set({ user: null, isAuthenticated: false });
+          set({ user: data, isAuthenticated: true, initialized: true });
+        } catch (error) {
+          set({ user: null, isAuthenticated: false, initialized: true });
         }
       },
     }),

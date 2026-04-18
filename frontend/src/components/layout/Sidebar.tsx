@@ -94,6 +94,7 @@ function NavGroup({ item, collapsed }: { item: NavItem; collapsed: boolean }) {
 
 export default function Sidebar({ collapsed }: SidebarProps) {
   const { user, logout } = useAuthStore();
+  const [logoError, setLogoError] = useState(false);
 
   const visible = navItems.filter((item) => !item.adminOnly || user?.role === "Admin");
 
@@ -104,11 +105,20 @@ export default function Sidebar({ collapsed }: SidebarProps) {
         collapsed ? "w-16" : "w-64"
       )}
     >
-      {/* Logo */}
+      {/* Logo Section */}
       <div className="flex items-center gap-3 px-4 py-5 border-b border-white/10">
-        <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center shrink-0">
-          <Heart size={16} className="text-white" />
-        </div>
+        {!logoError ? (
+          <img 
+            src="/logo-white.png" 
+            alt="Logo" 
+            className="w-8 h-8 object-contain shrink-0"
+            onError={() => setLogoError(true)}
+          />
+        ) : (
+          <div className="w-8 h-8 rounded-lg bg-secondary flex items-center justify-center shrink-0">
+            <Heart size={16} className="text-white" />
+          </div>
+        )}
         {!collapsed && (
           <div className="overflow-hidden">
             <p className="text-white font-bold text-sm leading-tight">نظام إدارة</p>
